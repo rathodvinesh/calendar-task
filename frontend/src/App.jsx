@@ -13,6 +13,8 @@ import {
 import Home from "./components/Home/Home";
 import auth from "../../backend/config/firebase";
 import { ToastContainer } from "react-toastify";
+import Basic from "./components/Home/Calender";
+import MyCalendar from "./components/Home/Calender";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -33,6 +35,7 @@ function App() {
           />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/calender" element={<MyCalendar />} />
         </Routes>
         <ToastContainer />
       </Router>

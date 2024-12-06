@@ -17,6 +17,9 @@ export const Home = () => {
         <span className="text-3xl font-bold underline text-black">
           <h1>Home</h1>
         </span>
+        <button onClick={() => (window.location.href = "/calender")}>
+          Calender
+        </button>
         <button onClick={handleLogOut}>Logout</button>
       </div>
     </>
