@@ -1,12 +1,14 @@
 import React from "react";
 import auth from "../../../../backend/config/firebase";
+import { toast } from "react-toastify";
 
 export const Home = () => {
   const handleLogOut = async () => {
     try {
       await auth.signOut();
-      window.location.href = "/";
       toast.success("Logout successful");
+      window.location.href = "/";
+      // window.
     } catch (e) {
       console.log(e, "Error logging out");
     }

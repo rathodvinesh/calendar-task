@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../../../backend/config/firebase";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -15,9 +16,20 @@ const LoginForm = () => {
         email,
         password
       );
-      alert("Login successful");
-      window.location.href = "/home";
-      toast.success("Login successful");
+
+      const uid = userCredential.user.uid; // Get UID from the user object
+      console.log(uid);
+
+      // const res = await axios.post(`http://localhost:5000/user/login`, {
+      //   email,
+      // });
+
+      // if (res.status === 200) {
+      //   console.log(res.data);
+      //   window.location.href = "/home";
+      //   toast.success("Login successful");
+      //   alert("Login successful");
+      // }
       // Additional actions after successful login can be added here
     } catch (error) {
       console.error("Login failed", error);

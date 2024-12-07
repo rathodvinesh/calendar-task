@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import auth from "../../../../backend/config/firebase";
+import axios from "axios";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
@@ -13,13 +14,39 @@ export const Register = () => {
     if (password !== confirmPassword)
       return toast.error("Passwords do not match");
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      toast.success("Sign up successful");
-      // alert("Sign up successful");
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const uid = userCredential.user.uid;
+
+      console.log(`${import.meta.env.VITE_REACT_APP_BASE_URL}/user/login`);
+      const res = await axios
+        .post(`http://localhost:5000/user/register`, {
+          email,
+          uid,
+        })
+        .then((response) => {
+          console.log(response);
+          if (res.status === 200) {
+            console.log(res.data);
+            toast.success("Sign up successful");
+            alert("Sign up successful");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
-      toast.error("Sign up failed");
-      // alert("Sign up failed");
-      console.log(error);
+      if (error.response && error.response.data) {
+        toast.error(`Server Error: ${error.response.data.message}`);
+      } else if (error.code === "auth/email-already-in-use") {
+        toast.error("This email is already registered. Please log in instead.");
+      } else {
+        toast.error("Sign up failed. Please try again.");
+      }
+      console.error("Error:", error);
     }
   };
   return (
@@ -124,6 +151,7 @@ export const Register = () => {
             <div>
               <button
                 type="submit"
+                disabled={!email || !password || !confirmPassword}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign up

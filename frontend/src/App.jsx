@@ -24,6 +24,8 @@ function App() {
       setUser(user);
     });
   });
+  const userId = auth.currentUser?.uid;
+  console.log("User ID:", userId);
 
   return (
     <>
@@ -35,7 +37,12 @@ function App() {
           />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/calender" element={<MyCalendar />} />
+          {/* <div className="min-h-screen bg-gray-100 p-4">
+            <h1 className="text-2xl font-bold text-center mb-4">
+              My Event Calendar
+            </h1> */}
+          <Route path="/calender" element={<MyCalendar userId={userId} />} />
+          {/* </div> */}
         </Routes>
         <ToastContainer />
       </Router>
